@@ -10,7 +10,7 @@ require "logstash/namespace"
 # collated by amount of 3000 logs or can be collated in 30 seconds.
 #
 # The config looks like this:
-#
+# [source,ruby]
 #     filter {
 #       collate {
 #         size => 3000
@@ -26,10 +26,10 @@ class LogStash::Filters::Collate < LogStash::Filters::Base
   # How many logs should be collated.
   config :count, :validate => :number, :default => 1000
 
-  # The 'interval' is the time window which how long the logs should be collated. (default 1m)
+  # The `interval` is the time window which how long the logs should be collated. (default `1m`)
   config :interval, :validate => :string, :default => "1m"
 
-  # The 'order' collated events should appear in.
+  # The `order` collated events should appear in.
   config :order, :validate => ["ascending", "descending"], :default => "ascending"
 
   public
