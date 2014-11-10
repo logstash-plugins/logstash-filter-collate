@@ -89,16 +89,17 @@ class LogStash::Filters::Collate < LogStash::Filters::Base
   private
   def collate
     if (@order == "ascending")
-      @collatingArray.sort! { |eventA, eventB| eventB.timestamp <=> eventA.timestamp }
+      # call .to_i for now until https://github.com/elasticsearch/logstash/issues/2052 is fixed
+      @collatingArray.sort! { |eventA, eventB| eventB.timestamp.to_i <=> eventA.timestamp.to_i }
     else 
-      @collatingArray.sort! { |eventA, eventB| eventA.timestamp <=> eventB.timestamp }
+      @collatingArray.sort! { |eventA, eventB| eventA.timestamp.to_i <=> eventB.timestamp.to_i }
     end
     @collatingDone = true
   end # def collate
 
   # Flush any pending messages.
   public
-  def flush
+  def flush(options = {})
     events = []
     if (@collatingDone)
       @mutex.synchronize{
