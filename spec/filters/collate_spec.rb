@@ -1,4 +1,4 @@
-require "spec_helper"
+require "logstash/devutils/rspec/spec_helper"
 require "logstash/filters/collate"
 
 describe LogStash::Filters::Collate do
