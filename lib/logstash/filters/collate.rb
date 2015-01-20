@@ -21,7 +21,6 @@ require "logstash/namespace"
 class LogStash::Filters::Collate < LogStash::Filters::Base
 
   config_name "collate"
-  milestone 1
 
   # How many logs should be collated.
   config :count, :validate => :number, :default => 1000
