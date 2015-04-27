@@ -39,7 +39,7 @@ class LogStash::Filters::Collate < LogStash::Filters::Base
     @mutex = Mutex.new
     @collatingDone = false
     @collatingArray = Array.new
-    @scheduler = Rufus::Scheduler.start_new
+    @scheduler = Rufus::Scheduler.new
     @job = @scheduler.every @interval do
       @logger.info("Scheduler Activated")
       @mutex.synchronize{
