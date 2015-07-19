@@ -15,6 +15,7 @@ describe LogStash::Filters::Collate do
 
     events = [
       {
+        "tags" => ['fred'],
         "@timestamp" => Time.iso8601("2013-01-02T00:00:00.000Z"),
         "message" => "later message"
       },
@@ -35,6 +36,41 @@ describe LogStash::Filters::Collate do
           insist { s["message"]} == "later message"
         end
       end
+    end
+  end
+
+  describe "collate when timestamps are the same - order of events should not be changed" do
+    config <<-CONFIG
+      filter {
+        collate {
+          count => 3
+        }
+      }
+    CONFIG
+
+    events = [
+      {
+        "tags" => ['fred'],
+        "@timestamp" => Time.iso8601("2013-01-02T00:00:00.000Z"),
+        "message" => "tom"
+      },
+      {
+        "tags" => ['bob'],
+        "@timestamp" => Time.iso8601("2013-01-02T00:00:00.000Z"),
+        "message" => "dick"
+      },
+      {
+        "@timestamp" => Time.iso8601("2013-01-02T00:00:00.000Z"),
+        "message" => "harry"
+      }
+    ]
+
+    sample(events) do
+      insist { subject }.is_a? Array
+      insist { subject.length } == 3
+      insist { subject[0]["message"] } == "tom"
+      insist { subject[1]["message"] } == "dick"
+      insist { subject[2]["message"] } == "harry"
     end
   end
 
