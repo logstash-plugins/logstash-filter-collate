@@ -13,7 +13,7 @@ require "logstash/namespace"
 # [source,ruby]
 #     filter {
 #       collate {
-#         size => 3000
+#         count => 3000
 #         interval => "30s"
 #         order => "ascending"
 #       }
